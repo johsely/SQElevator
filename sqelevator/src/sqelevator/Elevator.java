@@ -12,6 +12,8 @@ public class Elevator {
 
 	private boolean[] servicesFloors;
 	private boolean[] requestButtons;
+	private boolean floorButtonsDown[];
+	private boolean floorButtonsUp[];
 	
 	private int committedDirection;
 	private int doorStatus;
@@ -21,15 +23,27 @@ public class Elevator {
 	private int closestFloor; // current closest floor
 	private int acceleration;
 	private int speed;
-	
+	private int floorHeight;
+	private int elevatorNum;
 	private int weight;
 	
 	
-	public Elevator(int nrOfFloors) {
-		this.nrOfFloors = nrOfFloors; 
+	public Elevator(int elevatorNum, int nrOfFloors) {
+				
+		if (elevatorNum  < 0) throw new RuntimeException("Minimum Elevator Num is 0!");
 
+
+		this.elevatorNum = elevatorNum;
+		
+		if (nrOfFloors  < 2) throw new RuntimeException("Minimum Floors is 2!");
+		
+		this.nrOfFloors  = nrOfFloors;
+		
+		this.floorHeight = 0;
 		servicesFloors = new boolean[nrOfFloors];
 		requestButtons = new boolean[nrOfFloors];
+		this.floorButtonsDown = new boolean[nrOfFloors];
+		this.floorButtonsUp = new boolean[nrOfFloors];
 
 		committedDirection = 0;
 		doorStatus = 0;
@@ -154,5 +168,49 @@ public class Elevator {
 	public void setClosestFloor(int closestFloor) {
 		this.closestFloor = closestFloor;
 	}
+	
+	public void setFloorButtonDown(int floor, boolean pressed) {
+		assert(floor >= 0 && floor < nrOfFloors);
+		floorButtonsDown[floor] = pressed;
+	}
+	
+	public boolean getFloorButtonDown(int floor) {
+		assert(floor >= 0 && floor < nrOfFloors);
+		return floorButtonsDown[floor];
+	}
+	
+	public void setFloorButtonUp(int floor, boolean pressed) {
+		assert(floor >= 0 && floor < nrOfFloors);
+		floorButtonsUp[floor] = pressed;
+	}
+	
+	public boolean getFloorButtonUp(int floor) {
+		assert(floor >= 0 && floor < nrOfFloors);
+		return floorButtonsUp[floor];
+	}
+	
+	
+	public int getElevatorNum(){
+		return elevatorNum;
+	}
+	
+	
+	public int getFloorHeight(){
+		return floorHeight;
+	}
+	
+	
+	public void setNrofFloors(int nrOfFloors){
+		
+		if (nrOfFloors  < 2) throw new RuntimeException("Minimum Floors is 2!");
+		this.nrOfFloors  = nrOfFloors;
+	}
+
+	
+	public void setFloorHeight(int floorHeight){
+		this.floorHeight =  floorHeight;
+	}
+	
+	
 	
 }

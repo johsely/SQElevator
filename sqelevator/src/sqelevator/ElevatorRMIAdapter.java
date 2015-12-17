@@ -18,7 +18,7 @@ public class ElevatorRMIAdapter implements IElevatorAdapter {
 	@Override
 	public Elevator GetElevator(int elevatorNumber) throws RemoteException {
 		int nrOfFloors = controller.getFloorNum();
-		Elevator temp = new Elevator(nrOfFloors);
+		Elevator temp = new Elevator(elevatorNumber,nrOfFloors);
 		temp.setCommittedDirection(controller.getCommittedDirection(elevatorNumber));
 		temp.setElevatorAcceleration(controller.getElevatorAccel(elevatorNumber));
 		
@@ -35,21 +35,18 @@ public class ElevatorRMIAdapter implements IElevatorAdapter {
 		temp.setElevatorSpeed(controller.getElevatorSpeed(elevatorNumber));
 		temp.setWeight(controller.getElevatorWeight(elevatorNumber));
 		temp.setTarget(controller.getTarget(elevatorNumber));
+		temp.setNrofFloors(controller.getFloorNum());
+		//FIXME: add set functions of static values  (floorheight,...)
+		
+		
+		for(int i = 0; i < nrOfFloors; i++) {
+			temp.setFloorButtonDown(i, controller.getFloorButtonDown(i));
+			temp.setFloorButtonUp(i, controller.getFloorButtonUp(i));
+		}
 			
 		return temp;
 	}
 
-	@Override
-	public MySystem GetSystem() throws RemoteException{
-		int nrOfFloors = controller.getFloorNum();
-		MySystem system = new MySystem(controller.getFloorHeight(), nrOfFloors, controller.getElevatorNum());
-		for(int i = 0; i < nrOfFloors; i++) {
-			system.setFloorButtonDown(i, controller.getFloorButtonDown(i));
-			system.setFloorButtonUp(i, controller.getFloorButtonUp(i));
-		}
-		return system;		
-	}
-	
 	@Override
 	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
 		controller.setCommittedDirection(elevatorNumber, direction);
@@ -70,4 +67,10 @@ public class ElevatorRMIAdapter implements IElevatorAdapter {
 		return controller.getClockTick();
 	}
 
+	@Override
+	public int getElevatorCnt() throws java.rmi.RemoteException{
+		 
+		 return controller.getElevatorNum();
+		 
+	 }
 }

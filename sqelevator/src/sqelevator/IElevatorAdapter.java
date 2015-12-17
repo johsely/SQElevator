@@ -31,10 +31,13 @@ public interface IElevatorAdapter {
 	 * @return clock tick
 	 */
 	public long getClockTick() throws java.rmi.RemoteException;
-
+	
+	
 	/**
-	 * Retrieves the current data of the system. 
-	 * @return a system
+	 * Retrieves the number of elevators in the building. 
+	 * @return total number of elevators
 	 */
-	public MySystem GetSystem() throws java.rmi.RemoteException;
+	public int getElevatorCnt() throws java.rmi.RemoteException; 
+	
+
 }
