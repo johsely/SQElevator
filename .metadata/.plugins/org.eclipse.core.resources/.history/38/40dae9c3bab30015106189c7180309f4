@@ -1,0 +1,30 @@
+package sqelevator;
+
+public class ElevatorController {
+
+	private ModeBase Mode;
+	private ElevatorDataPolling poller;
+	private IElevatorAdapter adapter;
+	
+	public ElevatorController(ElevatorDataPolling pol,IElevatorAdapter adap ){
+		adapter = adap;
+		poller = pol;
+		Mode   = new ModeManual();
+	}
+	
+	
+	public void startProcessing(){
+		Thread t = new Thread(poller);
+		
+		
+		t.start();
+		
+		
+		
+	}
+	
+	
+	//add functions that u access from gui
+	
+	
+}

@@ -1,0 +1,5 @@
+package sqelevator;
+
+public abstract class ModeBase {
+
+}

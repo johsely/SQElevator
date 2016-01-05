@@ -1,0 +1,22 @@
+package sqelevator;
+
+public class ElevatorController {
+
+	private ModeBase Mode;
+	private ElevatorDataPolling poller;
+	private IElevatorAdapter rmiAdapter;
+	
+	public ElevatorController(ElevatorDataPolling pol,IElevatorAdapter adap ){
+		rmiAdapter = adap;
+		poller = new ElevatorDataPolling(rmiAdapter);
+		
+		
+		
+		
+	}
+	
+	
+	//add functions that u access from gui
+	
+	
+}

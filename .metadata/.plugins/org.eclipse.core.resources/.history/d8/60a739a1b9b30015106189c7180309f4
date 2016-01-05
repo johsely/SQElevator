@@ -1,0 +1,10 @@
+package sqelevator;
+
+public class ElevatorController {
+
+	private ModeManual manMod;
+//	private ModeAutomatic autoMod;
+	
+	
+	
+}

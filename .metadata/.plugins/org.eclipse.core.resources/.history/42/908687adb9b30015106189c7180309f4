@@ -1,0 +1,19 @@
+package sqelevator;
+
+public class ElevatorController {
+
+	private ModeBase Mode;
+
+	
+	
+	public ElevatorController(){
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+}

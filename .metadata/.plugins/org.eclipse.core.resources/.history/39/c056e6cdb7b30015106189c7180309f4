@@ -1,0 +1,18 @@
+package sqelevator;
+
+import java.util.Observable;
+import java.util.Observer;
+
+public abstract class ModeBase implements Observer{
+
+	public Elevator elev;
+	
+	private ModeBase() {
+		
+		
+		
+	}
+	
+	
+	
+}

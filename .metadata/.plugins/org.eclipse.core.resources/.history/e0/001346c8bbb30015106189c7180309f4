@@ -1,0 +1,43 @@
+package sqelevator;
+
+public class ElevatorController {
+
+	private ModeBase Mode;
+	private ElevatorDataPolling poller;
+	private IElevatorAdapter adapter;
+	private Thread pollingThread;
+	
+	public ElevatorController(ElevatorDataPolling pol,IElevatorAdapter adap ){
+		adapter = adap;
+		poller = pol;
+		Mode   = new ModeManual();
+		poller.addObserver(Mode);
+		pollingThread = new Thread(poller);
+	}
+	
+	
+	public void startProcessing(){
+		pollingThread.start();	
+		
+	}
+	
+	//add functions that can be accessed from gui
+	
+	
+	public Elevator getElevatorInfo() {
+		
+		return Mode.elev;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+}

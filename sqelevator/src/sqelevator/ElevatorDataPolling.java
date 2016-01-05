@@ -1,8 +1,9 @@
 package sqelevator;
 
 import java.rmi.RemoteException;
+import java.util.Observable;
 
-public class ElevatorDataPolling {
+public class ElevatorDataPolling extends Observable implements Runnable {
 	private IElevatorAdapter elevatorAdapter;
 
 	public  Elevator elevators[];
@@ -12,6 +13,10 @@ public class ElevatorDataPolling {
 	public ElevatorDataPolling(IElevatorAdapter elevatorAdapter) {
 		this.elevatorAdapter = elevatorAdapter;
 		
+	}
+	public void run() {
+		initialize();
+		runDataPolling();
 	}
 	
 	// retrieves general information and creates array for elevators
@@ -24,17 +29,32 @@ public class ElevatorDataPolling {
 			e.printStackTrace();
 		}
 	}
+
 	
 	// get the data from the elevatorAdapter
 	public void runDataPolling() {
-		try {
-
-			for (int i = 0; i < elevatorAdapter.getElevatorCnt(); i++) {
-				elevators[i] = elevatorAdapter.GetElevator(i);
+		
+		while(true){
+			
+		
+			try {
+	
+				for (int i = 0; i < elevatorAdapter.getElevatorCnt(); i++) {
+					elevators[i] = elevatorAdapter.GetElevator(i);
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setChanged();
+		    notifyObservers();
+			
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

@@ -1,0 +1,28 @@
+package sqelevator;
+
+import java.util.Observable;
+
+public class ModeManual extends ModeBase {
+
+	
+	public ModeManual() {
+		
+		
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		
+		 if(arg instanceof ElevatorDataPolling) { 
+		 
+			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg;
+	
+			 
+			elev = recvData.elevators[0];
+			
+			
+		 }
+		
+	}
+
+}

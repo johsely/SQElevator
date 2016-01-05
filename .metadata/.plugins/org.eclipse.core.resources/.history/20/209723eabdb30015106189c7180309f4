@@ -1,0 +1,27 @@
+package sqelevator;
+
+import java.util.Observable;
+
+public class ModeManual extends ModeBase {
+
+	
+	public ModeManual(IElevatorAdapter adap)  {
+		 super(adap);
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		
+		 if(arg instanceof ElevatorDataPolling) { 
+		 
+			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg;
+	
+			 
+			elev = recvData.elevators[0]; //FIXME THREADSAFE???   only one elevator supported
+			
+			
+		 }
+		
+	}
+
+}
