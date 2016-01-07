@@ -68,7 +68,7 @@ public class ElevatorController implements Observer {
 		 if(arg1 instanceof ElevatorDataPolling) { 
 			 
 			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg1;
-			 //recvData.GetElevator();
+	
 			 if (automaticMode) {
 				 //do automatic control				 
 				 

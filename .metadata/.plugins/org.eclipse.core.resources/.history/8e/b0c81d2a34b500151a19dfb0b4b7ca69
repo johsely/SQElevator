@@ -20,10 +20,6 @@ public class ElevatorDataPolling extends Observable implements Runnable {
 			runDataPolling();
 		}
 	}
-	public Elevator GetElevator() {
-		
-		return elevators[0]; // FIXME: only 1 elevator supported now
-	}
 	
 	// retrieves general information and creates array for elevators
 	public void initialize(){
