@@ -35,26 +35,28 @@ public class ElevatorDataPolling extends Observable implements Runnable {
 	
 	// get the data from the elevatorAdapter
 	public void runDataPolling() {
+		
+		
 			
 		
-		try {
+			try {
 	
-			for (int i = 0; i < elevatorAdapter.getElevatorCnt(); i++) {
-				elevators[i] = elevatorAdapter.GetElevator(i);
+				for (int i = 0; i < elevatorAdapter.getElevatorCnt(); i++) {
+					elevators[i] = elevatorAdapter.GetElevator(i);
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setChanged();
+		    notifyObservers();
+			
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		setChanged();
-	    notifyObservers();
-		
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
 	}
 }

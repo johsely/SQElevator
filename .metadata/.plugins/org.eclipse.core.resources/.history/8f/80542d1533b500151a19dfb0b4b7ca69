@@ -35,6 +35,8 @@ public class ElevatorDataPolling extends Observable implements Runnable {
 	
 	// get the data from the elevatorAdapter
 	public void runDataPolling() {
+		
+		
 			
 		
 		try {

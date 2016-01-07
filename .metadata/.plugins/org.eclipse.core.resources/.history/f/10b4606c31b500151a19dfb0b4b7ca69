@@ -15,8 +15,8 @@ public class ElevatorController implements Observer {
 	public ElevatorController(ElevatorDataPolling pol,IElevatorAdapter adap ){
 		adapter = adap;
 		poller = pol;
+
 		poller.addObserver(this);
-		
 		pollingThread = new Thread(poller);
 		automaticMode = false;
 	}
@@ -27,11 +27,18 @@ public class ElevatorController implements Observer {
 		
 	}
 	
+	//add functions that can be accessed from gui
+	
+	
+	public Elevator getElevatorInfo() {
+		
+		return Mode.elev;
+	}
 
 	public void setDirectionUp() {
 		
 		try {
-			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
+			Mode.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,7 +50,7 @@ public class ElevatorController implements Observer {
 	public void setDirectionDown() {
 		
 		try {
-			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
+			Mode.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,7 +61,7 @@ public class ElevatorController implements Observer {
 	
 	public void setTarget(int floor){
 		try {
-			adapter.setTarget(0, floor);
+			Mode.setTarget(0, floor);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,13 +77,22 @@ public class ElevatorController implements Observer {
 			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg1;
 	
 			 if (automaticMode) {
-				 //do automatic control				 
+				 //do automatic things
 				 
-			 }	
+				 
+			 }
+			
 			
 		 }
-	
+		
+		
 	}
+	
+	
+	
+	
+	
+
 	
 	
 }

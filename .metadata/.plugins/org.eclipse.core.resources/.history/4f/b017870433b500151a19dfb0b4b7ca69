@@ -16,9 +16,7 @@ public class ElevatorDataPolling extends Observable implements Runnable {
 	}
 	public void run() {
 		initialize();
-		while(true){
-			runDataPolling();
-		}
+		runDataPolling();
 	}
 	
 	// retrieves general information and creates array for elevators
@@ -35,26 +33,28 @@ public class ElevatorDataPolling extends Observable implements Runnable {
 	
 	// get the data from the elevatorAdapter
 	public void runDataPolling() {
+		
+		while(true){
 			
 		
-		try {
+			try {
 	
-			for (int i = 0; i < elevatorAdapter.getElevatorCnt(); i++) {
-				elevators[i] = elevatorAdapter.GetElevator(i);
+				for (int i = 0; i < elevatorAdapter.getElevatorCnt(); i++) {
+					elevators[i] = elevatorAdapter.GetElevator(i);
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setChanged();
+		    notifyObservers();
+			
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		setChanged();
-	    notifyObservers();
-		
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
 	}
 }

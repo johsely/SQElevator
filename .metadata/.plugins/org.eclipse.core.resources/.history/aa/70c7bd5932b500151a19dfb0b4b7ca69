@@ -43,7 +43,7 @@ public class ElevatorController implements Observer {
 	public void setDirectionDown() {
 		
 		try {
-			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
+			adapter.setCommittedDirection(0, direction);, IElevator.ELEVATOR_DIRECTION_DOWN);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,6 +77,12 @@ public class ElevatorController implements Observer {
 		 }
 	
 	}
+	
+	
+	
+	
+	
+
 	
 	
 }

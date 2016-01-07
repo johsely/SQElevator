@@ -28,6 +28,8 @@ public class ElevatorController implements Observer {
 	}
 	
 
+	
+
 	public void setDirectionUp() {
 		
 		try {
@@ -70,13 +72,22 @@ public class ElevatorController implements Observer {
 			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg1;
 	
 			 if (automaticMode) {
-				 //do automatic control				 
+				 //do automatic things
 				 
-			 }	
+				 
+			 }
+			
 			
 		 }
-	
+		
+		
 	}
+	
+	
+	
+	
+	
+
 	
 	
 }

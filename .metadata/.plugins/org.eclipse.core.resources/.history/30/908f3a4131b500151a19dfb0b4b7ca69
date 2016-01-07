@@ -1,12 +1,10 @@
 package sqelevator;
 
 import java.rmi.RemoteException;
-import java.util.Observable;
-import java.util.Observer;
 
-public class ElevatorController implements Observer {
+public class ElevatorController {
 
-
+	private ModeBase Mode;
 	private ElevatorDataPolling poller;
 	private IElevatorAdapter adapter;
 	private Thread pollingThread;
@@ -15,8 +13,8 @@ public class ElevatorController implements Observer {
 	public ElevatorController(ElevatorDataPolling pol,IElevatorAdapter adap ){
 		adapter = adap;
 		poller = pol;
-		poller.addObserver(this);
-		
+		Mode   = new ModeManual(adap);
+		poller.addObserver(Mode);
 		pollingThread = new Thread(poller);
 		automaticMode = false;
 	}
@@ -27,11 +25,18 @@ public class ElevatorController implements Observer {
 		
 	}
 	
+	//add functions that can be accessed from gui
+	
+	
+	public Elevator getElevatorInfo() {
+		
+		return Mode.elev;
+	}
 
 	public void setDirectionUp() {
 		
 		try {
-			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
+			Mode.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,7 +48,7 @@ public class ElevatorController implements Observer {
 	public void setDirectionDown() {
 		
 		try {
-			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
+			Mode.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,29 +59,18 @@ public class ElevatorController implements Observer {
 	
 	public void setTarget(int floor){
 		try {
-			adapter.setTarget(0, floor);
+			Mode.setTarget(0, floor);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		
-		 if(arg1 instanceof ElevatorDataPolling) { 
-			 
-			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg1;
 	
-			 if (automaticMode) {
-				 //do automatic control				 
-				 
-			 }	
-			
-		 }
 	
-	}
+	
+	
+	
+
 	
 	
 }

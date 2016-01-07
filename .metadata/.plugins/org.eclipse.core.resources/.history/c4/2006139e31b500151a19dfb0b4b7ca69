@@ -28,6 +28,8 @@ public class ElevatorController implements Observer {
 	}
 	
 
+	
+
 	public void setDirectionUp() {
 		
 		try {
@@ -77,6 +79,12 @@ public class ElevatorController implements Observer {
 		 }
 	
 	}
+	
+	
+	
+	
+	
+
 	
 	
 }
