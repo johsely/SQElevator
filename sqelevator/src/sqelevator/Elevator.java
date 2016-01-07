@@ -205,12 +205,9 @@ public class Elevator {
 		if (nrOfFloors  < 2) throw new RuntimeException("Minimum Floors is 2!");
 		this.nrOfFloors  = nrOfFloors;
 	}
-
 	
 	public void setFloorHeight(int floorHeight){
 		this.floorHeight =  floorHeight;
 	}
-	
-	
 	
 }

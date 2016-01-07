@@ -65,9 +65,9 @@ public class ElevatorController implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		
-		 if(arg0 instanceof ElevatorDataPolling) { 
+		 if(arg1 instanceof ElevatorDataPolling) { 
 			 
-			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg0;
+			 ElevatorDataPolling recvData = (ElevatorDataPolling) arg1;
 			 //recvData.GetElevator();
 			 if (automaticMode) {
 				 //do automatic control				 
