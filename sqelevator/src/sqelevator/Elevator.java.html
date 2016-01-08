@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Elevator.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (08.01.2016 16:14:07)</a> &gt; <a href="../../index.html" class="el_group">sqelevator</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">sqelevator</a> &gt; <span class="el_source">Elevator.java</span></div><h1>Elevator.java</h1><pre class="source lang-java linenums">package sqelevator;
+
+import java.rmi.server.RemoteObject;
+
+<span class="pc bpc" id="L5" title="1 of 2 branches missed.">public class Elevator {</span>
+	/**
+	 * 
+	 */
+	
+	private int nrOfFloors;
+
+
+	private boolean[] servicesFloors;
+	private boolean[] requestButtons;
+	private boolean floorButtonsDown[];
+	private boolean floorButtonsUp[];
+	
+	private int committedDirection;
+	private int doorStatus;
+	
+	private int target;
+	private int position; // current position in feet from ground
+	private int closestFloor; // current closest floor
+	private int acceleration;
+	private int speed;
+	private int floorHeight;
+	private int elevatorNum;
+	private int weight;
+	
+	
+<span class="fc" id="L31">	public Elevator(int elevatorNum, int nrOfFloors) {</span>
+				
+<span class="fc bfc" id="L33" title="All 2 branches covered.">		if (elevatorNum  &lt; 0) throw new RuntimeException(&quot;Minimum Elevator Num is 0!&quot;);</span>
+
+
+<span class="fc" id="L36">		this.elevatorNum = elevatorNum;</span>
+		
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if (nrOfFloors  &lt; 2) throw new RuntimeException(&quot;Minimum Floors is 2!&quot;);</span>
+		
+<span class="fc" id="L40">		this.nrOfFloors  = nrOfFloors;</span>
+		
+<span class="fc" id="L42">		this.floorHeight = 0;</span>
+<span class="fc" id="L43">		servicesFloors = new boolean[nrOfFloors];</span>
+<span class="fc" id="L44">		requestButtons = new boolean[nrOfFloors];</span>
+<span class="fc" id="L45">		this.floorButtonsDown = new boolean[nrOfFloors];</span>
+<span class="fc" id="L46">		this.floorButtonsUp = new boolean[nrOfFloors];</span>
+
+<span class="fc" id="L48">		committedDirection = 0;</span>
+<span class="fc" id="L49">		doorStatus = 0;</span>
+		
+<span class="fc" id="L51">		target = 0;</span>
+<span class="fc" id="L52">		setPosition(0);</span>
+<span class="fc" id="L53">		closestFloor = 0;</span>
+<span class="fc" id="L54">		acceleration = 0;</span>
+<span class="fc" id="L55">		speed = 0;</span>
+		
+<span class="fc" id="L57">		weight = 0;</span>
+<span class="fc" id="L58">	}</span>
+
+	public int getNrOfFloors() {
+<span class="fc" id="L61">		return nrOfFloors;</span>
+	}
+
+	public int getCommittedDirection()
+	{
+<span class="fc" id="L66">		return committedDirection;</span>
+	}
+	
+	public void setCommittedDirection(int direction){
+<span class="fc" id="L70">		committedDirection = direction;</span>
+<span class="fc" id="L71">	}</span>
+
+	public boolean getElevatorButton(int floor)
+	{
+<span class="nc bnc" id="L75" title="All 6 branches missed.">		assert(floor &lt; nrOfFloors &amp;&amp; floor &gt;= 0);</span>
+<span class="nc" id="L76">		return requestButtons[floor];</span>
+	}
+
+	public int getElevatorDoorStatus()
+	{
+<span class="fc" id="L81">		return doorStatus;</span>
+	}
+	
+	public void setElevatorDoorStatus(int status){
+<span class="fc" id="L85">		doorStatus = status;</span>
+<span class="fc" id="L86">	}</span>
+
+	public int getElevatorPosition()
+	{
+<span class="fc" id="L90">		return position;</span>
+	}
+
+	public int getElevatorSpeed()
+	{
+<span class="fc" id="L95">		return speed;</span>
+	}
+	
+	public void setElevatorSpeed(int speed) {
+<span class="fc" id="L99">		this.speed = speed;</span>
+<span class="fc" id="L100">	}</span>
+
+	public int getElevatorWeight()
+	{
+<span class="fc" id="L104">		return weight;</span>
+	}
+
+	public boolean getServicesFloors(int floor)
+	{
+<span class="fc" id="L109">		return servicesFloors[floor];</span>
+	}
+
+	public int getTarget()
+	{
+<span class="fc" id="L114">		return target;</span>
+	}
+
+
+	public void setTarget(int target)
+	{
+<span class="fc" id="L120">		this.target = target;</span>
+<span class="fc" id="L121">	}</span>
+	
+	public void setServicesFloors(boolean floors[]){
+<span class="fc" id="L124">		servicesFloors = floors;</span>
+<span class="fc" id="L125">	}</span>
+	
+	public void setServicesFloors(int floor, boolean service)
+	{
+<span class="nc" id="L129">		servicesFloors[floor] = service;</span>
+<span class="nc" id="L130">	}</span>
+
+	public int getElevatorAcceleration() {
+<span class="fc" id="L133">		return acceleration;</span>
+	}
+
+	public void setElevatorAcceleration(int acceleration) {
+<span class="fc" id="L137">		this.acceleration = acceleration;</span>
+<span class="fc" id="L138">	}</span>
+
+	public boolean[] getRequestButtons() {
+<span class="fc" id="L141">		return requestButtons;</span>
+	}
+
+	public void setRequestButtons(boolean[] requestButtons) {
+<span class="fc" id="L145">		this.requestButtons = requestButtons;</span>
+<span class="fc" id="L146">	}</span>
+
+	public int getPosition() {
+<span class="fc" id="L149">		return position;</span>
+	}
+
+	public void setPosition(int position) {
+<span class="fc" id="L153">		this.position = position;</span>
+<span class="fc" id="L154">	}</span>
+
+	public int getWeight() {
+<span class="nc" id="L157">		return weight;</span>
+	}
+
+	public void setWeight(int weight) {
+<span class="fc" id="L161">		this.weight = weight;</span>
+<span class="fc" id="L162">	}</span>
+
+	public int getClosestFloor() {
+<span class="fc" id="L165">		return closestFloor;</span>
+	}
+
+	public void setClosestFloor(int closestFloor) {
+<span class="fc" id="L169">		this.closestFloor = closestFloor;</span>
+<span class="fc" id="L170">	}</span>
+	
+	public void setFloorButtonDown(int floor, boolean pressed) {
+<span class="pc bpc" id="L173" title="5 of 6 branches missed.">		assert(floor &gt;= 0 &amp;&amp; floor &lt; nrOfFloors);</span>
+<span class="fc" id="L174">		floorButtonsDown[floor] = pressed;</span>
+<span class="fc" id="L175">	}</span>
+	
+	public boolean getFloorButtonDown(int floor) {
+<span class="pc bpc" id="L178" title="5 of 6 branches missed.">		assert(floor &gt;= 0 &amp;&amp; floor &lt; nrOfFloors);</span>
+<span class="fc" id="L179">		return floorButtonsDown[floor];</span>
+	}
+	
+	public void setFloorButtonUp(int floor, boolean pressed) {
+<span class="pc bpc" id="L183" title="5 of 6 branches missed.">		assert(floor &gt;= 0 &amp;&amp; floor &lt; nrOfFloors);</span>
+<span class="fc" id="L184">		floorButtonsUp[floor] = pressed;</span>
+<span class="fc" id="L185">	}</span>
+	
+	public boolean getFloorButtonUp(int floor) {
+<span class="pc bpc" id="L188" title="5 of 6 branches missed.">		assert(floor &gt;= 0 &amp;&amp; floor &lt; nrOfFloors);</span>
+<span class="fc" id="L189">		return floorButtonsUp[floor];</span>
+	}
+	
+	
+	public int getElevatorNum(){
+<span class="fc" id="L194">		return elevatorNum;</span>
+	}
+	
+	
+	public int getFloorHeight(){
+<span class="nc" id="L199">		return floorHeight;</span>
+	}
+	
+	
+	public void setNrofFloors(int nrOfFloors){
+		
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (nrOfFloors  &lt; 2) throw new RuntimeException(&quot;Minimum Floors is 2!&quot;);</span>
+<span class="fc" id="L206">		this.nrOfFloors  = nrOfFloors;</span>
+<span class="fc" id="L207">	}</span>
+	
+	public void setFloorHeight(int floorHeight){
+<span class="nc" id="L210">		this.floorHeight =  floorHeight;</span>
+<span class="nc" id="L211">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>AllTests (08.01.2016 16:14:07)</div></body></html>

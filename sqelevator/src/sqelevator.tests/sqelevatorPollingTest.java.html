@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>sqelevatorPollingTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (08.01.2016 16:14:07)</a> &gt; <a href="../../index.html" class="el_group">sqelevator</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">sqelevator.tests</a> &gt; <span class="el_source">sqelevatorPollingTest.java</span></div><h1>sqelevatorPollingTest.java</h1><pre class="source lang-java linenums">package sqelevator.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import sqelevator.Elevator;
+import sqelevator.ElevatorDataPolling;
+
+<span class="fc" id="L12">public class sqelevatorPollingTest {</span>
+
+	@Rule
+<span class="fc" id="L15">	public final ExpectedException exception = ExpectedException.none();</span>
+	
+	@Test
+	public void testPollingSimpleGetElevatorNum() {
+		
+		
+<span class="fc" id="L21">		DummyElevatorAdapter adapter = new DummyElevatorAdapter(0,1,1,1,1,1,1,1,1,1,2);</span>
+<span class="fc" id="L22">		ElevatorDataPolling poll = new ElevatorDataPolling(adapter);</span>
+<span class="fc" id="L23">		poll.initialize();</span>
+<span class="fc" id="L24">		poll.runDataPolling();</span>
+<span class="fc" id="L25">		assertEquals(0,poll.elevators[0].getElevatorNum());</span>
+<span class="fc" id="L26">	}</span>
+	
+	
+	@Test
+	public void testPollingNegativeFloors() {
+		
+<span class="nc" id="L32">		exception.expect(RuntimeException.class);</span>
+<span class="nc" id="L33">		exception.expectMessage(&quot;Minimum Floors is 2!&quot;);</span>
+		
+<span class="nc" id="L35">		DummyElevatorAdapter adapter = new DummyElevatorAdapter(2,2,1,1,1,1,1,1,1,1,-1);</span>
+<span class="nc" id="L36">		ElevatorDataPolling poll = new ElevatorDataPolling(adapter);</span>
+		
+	
+<span class="nc" id="L39">	}</span>
+	@Test
+	public void testPollingOneFloor() {
+		
+<span class="nc" id="L43">		exception.expect(RuntimeException.class);</span>
+<span class="nc" id="L44">		exception.expectMessage(&quot;Minimum Floors is 2!&quot;);</span>
+		
+<span class="nc" id="L46">		DummyElevatorAdapter adapter = new DummyElevatorAdapter(2,2,1,1,1,1,1,1,1,1,1);</span>
+<span class="nc" id="L47">		ElevatorDataPolling poll = new ElevatorDataPolling(adapter);</span>
+		
+<span class="nc" id="L49">	}</span>
+	
+	@Test
+	public void testPollingElevatorNumNegative() {
+		
+<span class="nc" id="L54">		exception.expect(RuntimeException.class);</span>
+<span class="nc" id="L55">		exception.expectMessage(&quot;Minimum Elevator Num is 0!&quot;);</span>
+		
+<span class="nc" id="L57">		DummyElevatorAdapter adapter = new DummyElevatorAdapter(-1,2,1,1,1,1,1,1,1,1,1);</span>
+<span class="nc" id="L58">		ElevatorDataPolling poll = new ElevatorDataPolling(adapter);</span>
+		
+<span class="nc" id="L60">	}</span>
+	@Test
+	public void testPollingElevatorOk() {
+		
+		
+<span class="fc" id="L65">		DummyElevatorAdapter adapter = new DummyElevatorAdapter(2,2,1,1,1,1,1,1,1,1,2);</span>
+<span class="fc" id="L66">		ElevatorDataPolling poll = new ElevatorDataPolling(adapter);</span>
+<span class="fc" id="L67">		poll.initialize();</span>
+<span class="fc" id="L68">		poll.runDataPolling();</span>
+		
+<span class="fc" id="L70">		assertEquals(2,poll.elevators[1].getElevatorNum());</span>
+<span class="fc" id="L71">		assertEquals(1,poll.elevators[1].getCommittedDirection());	</span>
+<span class="fc" id="L72">		assertEquals(1,poll.elevators[1].getElevatorAcceleration());</span>
+<span class="fc" id="L73">		assertEquals(1,poll.elevators[1].getElevatorDoorStatus());</span>
+<span class="fc" id="L74">		assertEquals(1,poll.elevators[1].getClosestFloor());</span>
+<span class="fc" id="L75">		assertEquals(1,poll.elevators[1].getElevatorPosition());</span>
+<span class="fc" id="L76">		assertEquals(1,poll.elevators[1].getElevatorSpeed());</span>
+<span class="fc" id="L77">		assertEquals(1,poll.elevators[1].getElevatorWeight());</span>
+<span class="fc" id="L78">		assertEquals(1,poll.elevators[1].getTarget());</span>
+<span class="fc" id="L79">		assertEquals(2,poll.elevators[1].getNrOfFloors());	</span>
+		
+<span class="fc" id="L81">		assertTrue(poll.elevators[1].getFloorButtonDown(0));</span>
+<span class="fc" id="L82">		assertTrue(poll.elevators[1].getFloorButtonDown(1));</span>
+<span class="fc" id="L83">		assertTrue(poll.elevators[1].getFloorButtonUp(0));</span>
+<span class="fc" id="L84">		assertTrue(poll.elevators[1].getFloorButtonUp(1));</span>
+		
+<span class="fc" id="L86">		assertTrue(poll.elevators[1].getServicesFloors(0));</span>
+<span class="fc" id="L87">		assertTrue(poll.elevators[1].getServicesFloors(1));</span>
+		
+<span class="fc" id="L89">		assertTrue(poll.elevators[1].getRequestButtons()[0]);</span>
+<span class="fc" id="L90">		assertTrue(poll.elevators[1].getRequestButtons()[0]);	</span>
+<span class="fc" id="L91">	}</span>
+	
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>AllTests (08.01.2016 16:14:07)</div></body></html>

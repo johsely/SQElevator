@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ElevatorGUI.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (08.01.2016 16:14:07)</a> &gt; <a href="../../index.html" class="el_group">sqelevator</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">sqelevator</a> &gt; <span class="el_source">ElevatorGUI.java</span></div><h1>ElevatorGUI.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package sqelevator;</span>
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+
+public class ElevatorGUI implements Observer {
+
+	private JFrame frame;
+	private JSplitPane splitPane;
+	private JPanel panelLeft;
+	private JPanel panelRight;
+	private Elevator elevator;
+	private JLabel payloadValueLabel;
+	private JLabel speedValueLabel;
+	private JLabel doorstatusValueLabel;
+	private JLabel targetsValueLabel;
+	private ElevatorController controller;
+	private ElevatorDataPolling poller;
+	private IElevatorAdapter adapter;
+	private JRadioButton autoButton;
+	//private JButton floorZero, floorOne, floorTwo, floorThree, floorFour;
+	private JButton[] floorButtons;
+	
+<span class="nc" id="L40">	public ElevatorGUI(IElevatorAdapter adapter, ElevatorDataPolling poller) {</span>
+<span class="nc" id="L41">		this.adapter = adapter;</span>
+<span class="nc" id="L42">		this.poller = poller;</span>
+<span class="nc" id="L43">	}</span>
+	
+	public void createController() {
+<span class="nc" id="L46">		poller.addObserver(this);</span>
+<span class="nc" id="L47">		controller = new ElevatorController(poller, adapter);</span>
+<span class="nc" id="L48">		controller.startProcessing();</span>
+<span class="nc" id="L49">	}</span>
+	
+	public void addElevatorProgressBar(JPanel panel) {
+<span class="nc" id="L52">		JProgressBar elevatorProgressBar = new JProgressBar(JProgressBar.VERTICAL, 0, 100);</span>
+<span class="nc" id="L53">		panel.add(elevatorProgressBar);</span>
+<span class="nc" id="L54">	}</span>
+
+	public void customizeFloor(JButton floor, Dimension floorDimension, Font floorFont) {
+<span class="nc" id="L57">		floor.setPreferredSize(floorDimension);</span>
+<span class="nc" id="L58">		floor.setFont(floorFont);</span>
+<span class="nc" id="L59">	}</span>
+
+	public void addUpDownPanel(JPanel panel, final int floorNumber) {
+<span class="nc" id="L62">		JPanel upDownPanel = new JPanel();</span>
+<span class="nc" id="L63">		upDownPanel.setLayout(new java.awt.GridLayout(2, 2));</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		if (floorNumber == 0) {</span>
+<span class="nc" id="L65">			JRadioButton buttonUp = new JRadioButton();</span>
+<span class="nc" id="L66">			upDownPanel.add(buttonUp);</span>
+<span class="nc" id="L67">			upDownPanel.add(new JLabel(&quot;       Up&quot;));</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		} else if (floorNumber &lt; 4) {</span>
+<span class="nc" id="L69">			ButtonGroup buttonGroup = new ButtonGroup();</span>
+<span class="nc" id="L70">			JRadioButton buttonUp = new JRadioButton();</span>
+<span class="nc" id="L71">			JRadioButton buttonDown = new JRadioButton();</span>
+<span class="nc" id="L72">			buttonGroup.add(buttonUp);</span>
+<span class="nc" id="L73">			buttonGroup.add(buttonDown);</span>
+<span class="nc" id="L74">			upDownPanel.add(buttonUp);</span>
+<span class="nc" id="L75">			upDownPanel.add(new JLabel(&quot;Up&quot;));</span>
+<span class="nc" id="L76">			upDownPanel.add(buttonDown);</span>
+<span class="nc" id="L77">			upDownPanel.add(new JLabel(&quot;Down&quot;));</span>
+<span class="nc" id="L78">		} else {</span>
+<span class="nc" id="L79">			JRadioButton buttonDown = new JRadioButton();</span>
+<span class="nc" id="L80">			upDownPanel.add(buttonDown);</span>
+<span class="nc" id="L81">			upDownPanel.add(new JLabel(&quot;       Down&quot;));</span>
+		}
+
+<span class="nc" id="L84">		panel.add(upDownPanel);</span>
+<span class="nc" id="L85">	}</span>
+
+	public void addDirectionInfo(JPanel panel) {
+<span class="nc" id="L88">		JPanel directionPanel = new JPanel();</span>
+<span class="nc" id="L89">		Font directionFont = new Font(&quot;Verdana&quot;, Font.BOLD, 15);</span>
+<span class="nc" id="L90">		JTextArea upDirection = new JTextArea(&quot;Up&quot;);</span>
+<span class="nc" id="L91">		upDirection.setFont(directionFont);</span>
+<span class="nc" id="L92">		JTextArea downDirection = new JTextArea(&quot;Down&quot;);</span>
+<span class="nc" id="L93">		downDirection.setFont(directionFont);</span>
+		// upDirection.setVisible(false);
+		// downDirection.setVisible(false);
+<span class="nc" id="L96">		directionPanel.add(upDirection);</span>
+<span class="nc" id="L97">		directionPanel.add(downDirection);</span>
+<span class="nc" id="L98">		panel.add(directionPanel);</span>
+<span class="nc" id="L99">	}</span>
+
+	public void addElevatorInfos(JPanel panel) {
+<span class="nc" id="L102">		JPanel elevatorInfos = new JPanel(new java.awt.GridLayout(4, 2));</span>
+<span class="nc" id="L103">		JLabel payloadLabel = new JLabel(&quot;Payload:     &quot;);</span>
+<span class="nc" id="L104">		JLabel speedLabel = new JLabel(&quot;Speed:  &quot;);</span>
+<span class="nc" id="L105">		JLabel doorstatusLabel = new JLabel(&quot;Door Status:  &quot;);</span>
+<span class="nc" id="L106">		JLabel targetsLabel = new JLabel(&quot;Target:  &quot;);</span>
+<span class="nc" id="L107">		payloadValueLabel = new JLabel(&quot;0&quot;);</span>
+<span class="nc" id="L108">		speedValueLabel = new JLabel(&quot;0&quot;);</span>
+<span class="nc" id="L109">		doorstatusValueLabel = new JLabel(&quot;0&quot;);</span>
+<span class="nc" id="L110">		targetsValueLabel = new JLabel(&quot;0&quot;);</span>
+
+<span class="nc" id="L112">		elevatorInfos.add(payloadLabel);</span>
+<span class="nc" id="L113">		elevatorInfos.add(payloadValueLabel);</span>
+<span class="nc" id="L114">		elevatorInfos.add(speedLabel);</span>
+<span class="nc" id="L115">		elevatorInfos.add(speedValueLabel);</span>
+<span class="nc" id="L116">		elevatorInfos.add(doorstatusLabel);</span>
+<span class="nc" id="L117">		elevatorInfos.add(doorstatusValueLabel);</span>
+<span class="nc" id="L118">		elevatorInfos.add(targetsLabel);</span>
+<span class="nc" id="L119">		elevatorInfos.add(targetsValueLabel);</span>
+<span class="nc" id="L120">		panel.add(elevatorInfos);</span>
+<span class="nc" id="L121">	}</span>
+
+	public void addModePanel(JPanel panel) {
+<span class="nc" id="L124">		JPanel modePanel = new JPanel();</span>
+<span class="nc" id="L125">		modePanel.add(new JLabel(&quot;Automatic Mode: &quot;));</span>
+<span class="nc" id="L126">		autoButton = new JRadioButton();</span>
+<span class="nc" id="L127">		autoButton.addActionListener(new ActionListener() {</span>
+		    public void actionPerformed(ActionEvent e)
+		    {
+<span class="nc" id="L130">		    	controller.setTarget(3);</span>
+<span class="nc" id="L131">		    }</span>
+		});
+<span class="nc" id="L133">		modePanel.add(autoButton);</span>
+<span class="nc" id="L134">		modePanel.add(new JLabel(&quot;Manual Mode:&quot;));</span>
+<span class="nc" id="L135">		modePanel.add(new JRadioButton());</span>
+<span class="nc" id="L136">		panel.add(modePanel);</span>
+<span class="nc" id="L137">	}</span>
+	
+	public void setFloorColors() {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (int i = 0; i &lt; 5; i++) {</span>
+<span class="nc" id="L141">			floorButtons[i].setForeground(Color.BLACK);</span>
+<span class="nc" id="L142">			floorButtons[i].setBackground(Color.GRAY);</span>
+		}
+<span class="nc" id="L144">	}</span>
+	
+	public void addFloorListeners() {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int i = 0; i &lt; 5; i++) {</span>
+<span class="nc" id="L148">			floorButtons[i].addActionListener(new ActionListener() {</span>
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L152">					JButton floorButton = (JButton)e.getSource();</span>
+<span class="nc" id="L153">					controller.setTarget(Integer.parseInt(floorButton.getText()));</span>
+<span class="nc" id="L154">				}</span>
+			});
+		}
+<span class="nc" id="L157">	}</span>
+
+	public void CreateGUI() {
+		// create frame
+<span class="nc" id="L161">		frame = new JFrame();</span>
+<span class="nc" id="L162">		frame.setTitle(&quot;ElevatorGUI&quot;);</span>
+
+		// create splitPane
+<span class="nc" id="L165">		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);</span>
+
+		// create panels with their subPanels
+<span class="nc" id="L168">		panelLeft = new JPanel();</span>
+<span class="nc" id="L169">		panelLeft.setLayout(new javax.swing.BoxLayout(panelLeft, javax.swing.BoxLayout.Y_AXIS));</span>
+		// TODO
+		//addElevatorProgressBar(panelLeft);
+<span class="nc" id="L172">		JPanel panelZero = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="nc" id="L173">		JPanel panelOne = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="nc" id="L174">		JPanel panelTwo = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="nc" id="L175">		JPanel panelThree = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="nc" id="L176">		JPanel panelFour = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="nc" id="L177">		panelRight = new JPanel();</span>
+
+		// create floors
+<span class="nc" id="L180">		Dimension floorDimension = new Dimension(50, 100);</span>
+<span class="nc" id="L181">		Font floorFont = new Font(&quot;Verdana&quot;, Font.BOLD, 20);</span>
+<span class="nc" id="L182">		floorButtons = new JButton[5];</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		for (int i = 0; i &lt; 5; i++) {</span>
+<span class="nc" id="L184">			floorButtons[i] = new JButton(String.valueOf(i));</span>
+<span class="nc" id="L185">			customizeFloor(floorButtons[i], floorDimension, floorFont);</span>
+		}
+		
+		// add floors to subPanels
+<span class="nc" id="L189">		panelZero.add(floorButtons[0]);</span>
+<span class="nc" id="L190">		panelOne.add(floorButtons[1]);</span>
+<span class="nc" id="L191">		panelTwo.add(floorButtons[2]);</span>
+<span class="nc" id="L192">		panelThree.add(floorButtons[3]);</span>
+<span class="nc" id="L193">		panelFour.add(floorButtons[4]);</span>
+
+		// add up and down to subPanels
+<span class="nc" id="L196">		addUpDownPanel(panelZero, 0);</span>
+<span class="nc" id="L197">		addUpDownPanel(panelOne, 1);</span>
+<span class="nc" id="L198">		addUpDownPanel(panelTwo, 2);</span>
+<span class="nc" id="L199">		addUpDownPanel(panelThree, 3);</span>
+<span class="nc" id="L200">		addUpDownPanel(panelFour, 4);</span>
+
+		// add direction info
+<span class="nc" id="L203">		addDirectionInfo(panelZero);</span>
+
+		// add subPanels to panelLeft
+<span class="nc" id="L206">		panelLeft.add(panelFour);</span>
+<span class="nc" id="L207">		panelLeft.add(panelThree);</span>
+<span class="nc" id="L208">		panelLeft.add(panelTwo);</span>
+<span class="nc" id="L209">		panelLeft.add(panelOne);</span>
+<span class="nc" id="L210">		panelLeft.add(panelZero);</span>
+
+		// add elevator infos and mode to panelRight
+<span class="nc" id="L213">		addElevatorInfos(panelRight);</span>
+<span class="nc" id="L214">		addModePanel(panelRight);</span>
+
+		// add panel to splitPane
+<span class="nc" id="L217">		splitPane.setLeftComponent(panelLeft);</span>
+<span class="nc" id="L218">		splitPane.setRightComponent(panelRight);</span>
+
+		// add splitPane to frame
+<span class="nc" id="L221">		frame.add(splitPane);</span>
+		
+		// create controller
+<span class="nc" id="L224">		createController();</span>
+		
+		// add listeners to buttons
+<span class="nc" id="L227">		addFloorListeners();</span>
+
+		// set frame to suitable size and set it visible
+<span class="nc" id="L230">		frame.setSize(500, 500);</span>
+<span class="nc" id="L231">		frame.setVisible(true);</span>
+<span class="nc" id="L232">	}</span>
+	
+	
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (arg0 instanceof ElevatorDataPolling) {</span>
+
+<span class="nc" id="L241">			ElevatorDataPolling recvData = (ElevatorDataPolling) arg0;</span>
+<span class="nc" id="L242">			elevator = recvData.GetElevator();</span>
+<span class="nc" id="L243">			payloadValueLabel.setText(String.valueOf(elevator.getElevatorWeight()));</span>
+<span class="nc" id="L244">			speedValueLabel.setText(String.valueOf(elevator.getElevatorSpeed()));</span>
+<span class="nc" id="L245">			doorstatusValueLabel.setText(String.valueOf(elevator.getElevatorDoorStatus()));</span>
+<span class="nc" id="L246">			targetsValueLabel.setText(String.valueOf(elevator.getTarget()));</span>
+<span class="nc" id="L247">			setFloorColors();</span>
+<span class="nc" id="L248">			floorButtons[elevator.getTarget()].setForeground(Color.GREEN);</span>
+<span class="nc" id="L249">			floorButtons[elevator.getClosestFloor()].setBackground(Color.RED);;</span>
+		}
+<span class="nc" id="L251">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>AllTests (08.01.2016 16:14:07)</div></body></html>

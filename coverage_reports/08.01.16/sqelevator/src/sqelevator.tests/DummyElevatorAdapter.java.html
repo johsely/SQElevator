@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>DummyElevatorAdapter.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (08.01.2016 16:14:07)</a> &gt; <a href="../../index.html" class="el_group">sqelevator</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">sqelevator.tests</a> &gt; <span class="el_source">DummyElevatorAdapter.java</span></div><h1>DummyElevatorAdapter.java</h1><pre class="source lang-java linenums">package sqelevator.tests;
+
+import java.rmi.RemoteException;
+
+import sqelevator.Elevator;
+import sqelevator.IElevatorAdapter;
+
+//dummy only support a single elevator
+// dummy
+public class DummyElevatorAdapter implements IElevatorAdapter {
+	private Elevator dummyElevator;
+	private int elevatorCnt;
+	
+<span class="fc" id="L14">	public DummyElevatorAdapter(int elevatorNum, int elevatorCnt, int committedDirection, int ElevatorAcceleration, int doorStatus, int ElevatorFloor, int ElevatorPosition, int ElevatorSpeed, int ElevatorWeight, int Target, int nrOfFloors ) {</span>
+<span class="fc" id="L15">		dummyElevator = new Elevator(elevatorNum, nrOfFloors );</span>
+<span class="fc" id="L16">		this.elevatorCnt = elevatorCnt;</span>
+		
+<span class="fc" id="L18">		dummyElevator.setCommittedDirection(committedDirection);</span>
+<span class="fc" id="L19">		dummyElevator.setElevatorAcceleration(ElevatorAcceleration);</span>
+		
+<span class="fc" id="L21">		boolean requestButtons[] = new boolean[nrOfFloors];</span>
+<span class="fc" id="L22">		boolean servicesFloor[] = new boolean[nrOfFloors];</span>
+
+<span class="fc bfc" id="L24" title="All 2 branches covered.">		for (int i = 0; i &lt; nrOfFloors; i++) {</span>
+<span class="fc" id="L25">			requestButtons[i] = true;</span>
+<span class="fc" id="L26">			servicesFloor[i] = true;</span>
+<span class="fc" id="L27">			dummyElevator.setFloorButtonDown(i, true);</span>
+<span class="fc" id="L28">			dummyElevator.setFloorButtonUp(i, true);</span>
+
+		}
+<span class="fc" id="L31">		dummyElevator.setRequestButtons(requestButtons);</span>
+<span class="fc" id="L32">		dummyElevator.setServicesFloors(servicesFloor);</span>
+		
+		
+<span class="fc" id="L35">		dummyElevator.setElevatorDoorStatus(doorStatus);</span>
+<span class="fc" id="L36">		dummyElevator.setClosestFloor(ElevatorFloor);</span>
+<span class="fc" id="L37">		dummyElevator.setPosition(ElevatorPosition);</span>
+<span class="fc" id="L38">		dummyElevator.setElevatorSpeed(ElevatorSpeed);</span>
+<span class="fc" id="L39">		dummyElevator.setWeight(ElevatorWeight);</span>
+<span class="fc" id="L40">		dummyElevator.setTarget(Target);</span>
+<span class="fc" id="L41">		dummyElevator.setNrofFloors(nrOfFloors);</span>
+
+		
+<span class="fc" id="L44">	}</span>
+	
+	@Override
+	public Elevator GetElevator(int elevatorNumber) throws RemoteException {
+		
+<span class="fc" id="L49">		return dummyElevator;</span>
+	}
+
+	@Override
+	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
+<span class="nc" id="L54">		dummyElevator.setCommittedDirection(direction);</span>
+<span class="nc" id="L55">	}</span>
+
+	@Override
+	public void setServicesFloors(int elevatorNumber, int floor, boolean service) throws RemoteException {
+<span class="nc" id="L59">		dummyElevator.setServicesFloors(floor, service);</span>
+<span class="nc" id="L60">	}</span>
+
+	@Override
+	public void setTarget(int elevatorNumber, int target) throws RemoteException {
+<span class="nc" id="L64">		dummyElevator.setTarget(target);</span>
+<span class="nc" id="L65">	}</span>
+
+	@Override
+	public long getClockTick() throws RemoteException {
+<span class="nc" id="L69">		return 100;</span>
+	}
+
+	@Override
+	public int getElevatorCnt() throws RemoteException {
+<span class="fc" id="L74">		return elevatorCnt;</span>
+
+	}
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>AllTests (08.01.2016 16:14:07)</div></body></html>

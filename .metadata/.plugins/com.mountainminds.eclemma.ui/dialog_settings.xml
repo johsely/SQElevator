@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="SessionExportWizard">
+		<item value="HTML" key="SessionExportPage1.format"/>
+		<list key="SessionExportPage1.destinations">
+			<item value="D:\ESD0567\ESD3\SQE3\PROJ\SQElevator\coverage_reports\08.01.16"/>
+			<item value="D:\ESD0567\ESD3\SQE3\PROJ\SQElevator"/>
+		</list>
+	</section>
+</section>
