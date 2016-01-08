@@ -1,4 +1,4 @@
-package sqelevator;
+package sqelevator.tests;
 
 import java.rmi.RemoteException;
 

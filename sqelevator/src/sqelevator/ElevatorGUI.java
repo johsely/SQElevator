@@ -37,9 +37,12 @@ public class ElevatorGUI implements Observer {
 	//private JButton floorZero, floorOne, floorTwo, floorThree, floorFour;
 	private JButton[] floorButtons;
 	
+	public ElevatorGUI(IElevatorAdapter adapter, ElevatorDataPolling poller) {
+		this.adapter = adapter;
+		this.poller = poller;
+	}
+	
 	public void createController() {
-		adapter = new DummyElevatorAdapter2(0, 1, 1000, 5);
-		poller = new ElevatorDataPolling(adapter);
 		poller.addObserver(this);
 		controller = new ElevatorController(poller, adapter);
 		controller.startProcessing();
