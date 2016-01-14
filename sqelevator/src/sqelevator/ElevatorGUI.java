@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 public class ElevatorGUI implements Observer {
 
 	private JFrame frame;
-	private JSplitPane splitPane;
+	private JSplitPane splitPane, splitPaneLeft;
 	private JPanel panelLeft;
 	private JPanel panelRight;
 	private Elevator elevator;
@@ -34,7 +34,6 @@ public class ElevatorGUI implements Observer {
 	private ElevatorDataPolling poller;
 	private IElevatorAdapter adapter;
 	private JRadioButton autoButton;
-	//private JButton floorZero, floorOne, floorTwo, floorThree, floorFour;
 	private JButton[] floorButtons;
 	
 	public ElevatorGUI(IElevatorAdapter adapter, ElevatorDataPolling poller) {
@@ -48,9 +47,10 @@ public class ElevatorGUI implements Observer {
 		controller.startProcessing();
 	}
 	
-	public void addElevatorProgressBar(JPanel panel) {
-		JProgressBar elevatorProgressBar = new JProgressBar(JProgressBar.VERTICAL, 0, 100);
-		panel.add(elevatorProgressBar);
+	public void addElevatorProgressBar(JSplitPane splitPaneLeft2) {
+		ProgressBar elevatorProgressBar = new ProgressBar();
+		elevatorProgressBar.runBar();
+		splitPaneLeft2.setLeftComponent(elevatorProgressBar);
 	}
 
 	public void customizeFloor(JButton floor, Dimension floorDimension, Font floorFont) {
@@ -165,15 +165,16 @@ public class ElevatorGUI implements Observer {
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 		// create panels with their subPanels
+		splitPaneLeft = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		addElevatorProgressBar(splitPaneLeft);
 		panelLeft = new JPanel();
 		panelLeft.setLayout(new javax.swing.BoxLayout(panelLeft, javax.swing.BoxLayout.Y_AXIS));
-		// TODO
-		//addElevatorProgressBar(panelLeft);
 		JPanel panelZero = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelOne = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelTwo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelThree = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel panelFour = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		panelRight = new JPanel();
 
 		// create floors
@@ -208,13 +209,14 @@ public class ElevatorGUI implements Observer {
 		panelLeft.add(panelTwo);
 		panelLeft.add(panelOne);
 		panelLeft.add(panelZero);
+		splitPaneLeft.setRightComponent(panelLeft);
 
 		// add elevator infos and mode to panelRight
 		addElevatorInfos(panelRight);
 		addModePanel(panelRight);
 
 		// add panel to splitPane
-		splitPane.setLeftComponent(panelLeft);
+		splitPane.setLeftComponent(splitPaneLeft);
 		splitPane.setRightComponent(panelRight);
 
 		// add splitPane to frame
