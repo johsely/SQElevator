@@ -18,7 +18,7 @@ public class ElevatorRMIAdapter implements IElevatorAdapter {
 	@Override
 	public Elevator GetElevator(int elevatorNumber) throws RemoteException {
 		int nrOfFloors = controller.getFloorNum();
-		Elevator temp = new Elevator(elevatorNumber,nrOfFloors);
+		Elevator temp = new Elevator(elevatorNumber,nrOfFloors);		
 		temp.setCommittedDirection(controller.getCommittedDirection(elevatorNumber));
 		temp.setElevatorAcceleration(controller.getElevatorAccel(elevatorNumber));
 		
@@ -35,9 +35,10 @@ public class ElevatorRMIAdapter implements IElevatorAdapter {
 		temp.setElevatorSpeed(controller.getElevatorSpeed(elevatorNumber));
 		temp.setWeight(controller.getElevatorWeight(elevatorNumber));
 		temp.setTarget(controller.getTarget(elevatorNumber));
-		temp.setNrofFloors(controller.getFloorNum());
-		//FIXME: add set functions of static values  (floorheight,...)
-		
+		temp.setNrofFloors(controller.getFloorNum());		
+		temp.setFloorHeight(controller.getFloorHeight());
+		temp.setRequestButtons(requestButtons);
+		temp.setServicesFloors(servicesFloor);
 		
 		for(int i = 0; i < nrOfFloors; i++) {
 			temp.setFloorButtonDown(i, controller.getFloorButtonDown(i));
