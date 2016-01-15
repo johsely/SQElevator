@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Console;
+import java.rmi.RemoteException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -184,7 +185,15 @@ public class ElevatorGUI implements Observer {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JButton floorButton = (JButton) e.getSource();
-					controller.setTarget(Integer.parseInt(floorButton.getText()));
+					try {
+						controller.setTarget(Integer.parseInt(floorButton.getText()));
+					} catch (NumberFormatException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			});
 		}

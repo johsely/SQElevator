@@ -32,7 +32,7 @@ public class DummyElevatorAdapter2 implements IElevatorAdapter  {
 		dummyElevator.setServicesFloors(servicesFloor);
 		
 		
-		dummyElevator.setElevatorDoorStatus(2);
+		dummyElevator.setElevatorDoorStatus(1);
 		dummyElevator.setClosestFloor(0);
 		dummyElevator.setPosition(0);
 		dummyElevator.setElevatorSpeed(0);

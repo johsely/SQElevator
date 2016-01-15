@@ -33,38 +33,19 @@ public class ElevatorController implements Observer {
 
 	}
 
-	public void setDirectionUp() {
-
-		try {
+	public void setDirectionUp() throws RemoteException {		
 			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
-	public void setDirectionDown() {
-
-		try {
+	public void setDirectionDown() throws RemoteException {
 			adapter.setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_DOWN);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
-	public void setTarget(int floor) {
-		try {
+	public void setTarget(int floor) throws RemoteException {		
 			adapter.setTarget(0, floor);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
-	private int getNextFloor(Elevator elev) {
+	public int getNextFloor(Elevator elev) {
 
 		// get closest next floor from current.
 		int differencetmp;
@@ -99,16 +80,20 @@ public class ElevatorController implements Observer {
 		if (arg0 instanceof ElevatorDataPolling) {
 
 			ElevatorDataPolling recvData = (ElevatorDataPolling) arg0;
-			// recvData.GetElevator();
 			if (automaticMode) {
 				Elevator elev = recvData.GetElevator();
 
 				if (elev.getElevatorSpeed() == 0) {
 					currentFloor = elev.getClosestFloor();
 
-					// move only when doors are closed
+					// move only when doors are opened
 					if (elev.getElevatorDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN) {
-						setTarget(getNextFloor(elev));
+						try {
+							setTarget(getNextFloor(elev));
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
 					}
 				}
