@@ -80,7 +80,7 @@ public class ElevatorController implements Observer {
 		int nextTarget = currentFloor;
 		for (int i = 0; i< numberOfFloors; ++i){
 			
-			if (destFloors[i] ||elev.getFloorButtonDown(i) || elev.getFloorButtonUp(i)) {  // pressed
+			if (destFloors[i] == true) {  // pressed
 				
 				if (currentFloor> i) differencetmp = currentFloor - i;
 				else 				 differencetmp = i - currentFloor;
@@ -91,7 +91,7 @@ public class ElevatorController implements Observer {
 					nextTarget = i;
 				}
 			}
-
+			
 			
 		}
 		

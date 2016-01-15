@@ -91,7 +91,7 @@ public class ElevatorController implements Observer {
 					nextTarget = i;
 				}
 			}
-
+			if ()
 			
 		}
 		

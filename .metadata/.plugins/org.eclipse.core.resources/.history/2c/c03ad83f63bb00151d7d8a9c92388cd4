@@ -72,7 +72,7 @@ public class ElevatorController implements Observer {
 			e.printStackTrace();
 		}
 	}
-	private int getNextFloor(Elevator elev) {
+	private int getNextFloor() {
 		
 		//get closest next floor from current.
 		int differencetmp;
@@ -80,7 +80,7 @@ public class ElevatorController implements Observer {
 		int nextTarget = currentFloor;
 		for (int i = 0; i< numberOfFloors; ++i){
 			
-			if (destFloors[i] ||elev.getFloorButtonDown(i) || elev.getFloorButtonUp(i)) {  // pressed
+			if (destFloors[i] == true) {  // pressed
 				
 				if (currentFloor> i) differencetmp = currentFloor - i;
 				else 				 differencetmp = i - currentFloor;
@@ -91,7 +91,7 @@ public class ElevatorController implements Observer {
 					nextTarget = i;
 				}
 			}
-
+				
 			
 		}
 		
@@ -117,14 +117,23 @@ public class ElevatorController implements Observer {
 						 destFloors[i] = elev.getElevatorButton(i);
 					 }
 					 
-					 //move only when doors are closed
-					 if (elev.getElevatorDoorStatus() ==IElevator.ELEVATOR_DOORS_CLOSED)
-					 {
-						 setTarget(getNextFloor(elev));
-						 					 
-					 }
 				 }
 
+				 
+				 
+				 
+				 
+				 //move only when doors are closed
+				 if (elev.getElevatorDoorStatus() ==IElevator.ELEVATOR_DOORS_CLOSED)
+				 {
+					 
+					 
+					 
+					 
+					 
+				 }
+				 
+				 
 			 }	
 			
 		 }
